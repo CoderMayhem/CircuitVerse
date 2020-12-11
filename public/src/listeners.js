@@ -49,6 +49,16 @@ export default function startListeners() {
             document.getElementById("projname").select();
         }, 100);
     });
+    /* Makes tabs reordering possible by making them sortable */
+    $("#tabsBar").sortable({
+        containment: 'parent',
+        items: '> div',
+        revert: false,
+        opacity: 0.5,
+        tolerance: 'pointer',
+        placeholder: 'placeholder',
+        forcePlaceholderSize: true,
+    });
 
     document.getElementById('simulationArea').addEventListener('mousedown', (e) => {
         simulationArea.mouseDown = true;
@@ -301,13 +311,13 @@ export default function startListeners() {
 
             // Updated restricted elements
             updateRestrictedElementsInScope();
-
+            localStorage.setItem('clipboardData', textToPutOnClipboard);
             e.preventDefault();
             if (textToPutOnClipboard == undefined) return;
             if (isIe) {
                 window.clipboardData.setData('Text', textToPutOnClipboard);
             } else {
-                e.clipboardData.setData('application/json', textToPutOnClipboard);
+                e.clipboardData.setData('text/plain', textToPutOnClipboard);
             }
         }
     });
@@ -327,13 +337,13 @@ export default function startListeners() {
 
             // Updated restricted elements
             updateRestrictedElementsInScope();
-
+            localStorage.setItem('clipboardData', textToPutOnClipboard);
             e.preventDefault();
             if (textToPutOnClipboard == undefined) return;
             if (isIe) {
                 window.clipboardData.setData('Text', textToPutOnClipboard);
             } else {
-                e.clipboardData.setData('application/json', textToPutOnClipboard);
+                e.clipboardData.setData('text/plain', textToPutOnClipboard);
             }
         }
     });
@@ -347,7 +357,7 @@ export default function startListeners() {
             if (isIe) {
                 data = window.clipboardData.getData('Text');
             } else {
-                data = e.clipboardData.getData('application/json');
+                data = e.clipboardData.getData('text/plain');
             }
 
             paste(data);
